@@ -12,7 +12,8 @@ export default function LoginOrSignUp() {
                     source={require("../assets/images/leaf-in-circle.png")} 
                     style={styles.logo} 
                   />            
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button}
+                onPress={() => router.push("/login")}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}
