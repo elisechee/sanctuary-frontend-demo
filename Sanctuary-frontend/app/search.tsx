@@ -10,7 +10,6 @@ const SearchPlaces = ( {onPlaceSelected, onRightButtonPress} ) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.autocompleteContainer}>
         <GooglePlacesAutocomplete
-      
           placeholder="Search"
           fetchDetails
           onPress={(data, details = null) => {
@@ -39,11 +38,8 @@ const SearchPlaces = ( {onPlaceSelected, onRightButtonPress} ) => {
               <Ionicons name="navigate" size={24} color="#D99B84" />
             </TouchableOpacity>
           )}
-     
         />
       </View>
-     
-     
     </SafeAreaView>
   );
 };
@@ -62,8 +58,10 @@ const styles = StyleSheet.create({
     },
     textInput: {
       backgroundColor: '#184040',
-    //   opacity: 0.7,
-      borderRadius: 5,
+      borderTopRightRadius: 5,
+      borderBottomRightRadius: 5,
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
       color: 'white',
       padding: 10,
       fontSize: 16,
@@ -75,7 +73,8 @@ const styles = StyleSheet.create({
         width: 44,
         color: 'white',
         height: 44,
-        borderRadius: 5,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         zIndex: 1,
         backgroundColor: '#184040',
       },
