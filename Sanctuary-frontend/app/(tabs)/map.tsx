@@ -1,63 +1,23 @@
-// import { PROVIDER_GOOGLE } from 'react-native-maps';
-// import MapView, { Marker } from 'react-native-maps';
-// import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-// import { useRouter } from 'expo-router';
-
-// export default function Map() {
-//   const router = useRouter();
-  
-//   return (
-//     <View style={styles.container}>
-//       <MapView
-//         style={styles.map}
-//         initialRegion={{
-//           latitude: 34.0689,  // UCLA latitude
-//           longitude: -118.4452, // UCLA longitude
-//           latitudeDelta: 0.0922,
-//           longitudeDelta: 0.0421,
-//         }}
-//       >
-//         <Marker
-//           coordinate={{ latitude: 34.0689, longitude: -118.4452 }}
-//           title="UCLA"
-//           description="University of California, Los Angeles"
-//         />
-//       </MapView>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#084141',
-//   },
-//   map: {
-//     width: '100%',
-//     height: '100%',
-//     opacity: 0.85,
-//   },
-//   button: {
-//     position: 'absolute',
-//     bottom: 20,
-//     right: 20,
-//     width: 50,
-//     height: 50,
-//   },
-// });
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Text, View, StyleSheet, Dimensions, TextInput } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons"; // Import icons
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import 'react-native-get-random-values';
+import SearchPlaces from '../search';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+
 
 export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [search, setSearch] = useState<string>('');
+  const mapRef = useRef<MapView>(null);
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -74,6 +34,16 @@ export default function Map() {
     getCurrentLocation();
   }, []);
 
+  const onPlaceSelected = (data, details) => {
+    const { lat, lng } = details.geometry.location;
+    mapRef.current?.animateToRegion({
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: 0.03,
+      longitudeDelta: 0.03,
+    }, 1000);
+  };
+
   if (errorMsg) {
     return (
       <View style={styles.container}>
@@ -83,18 +53,10 @@ export default function Map() {
   }
 
   return (
-    
+    <SafeAreaView>
     <View style={styles.container}>
-      {/* <StatusBar hidden /> */}
       <View style={styles.searchBarContainer}>
-        <Ionicons name="search-outline" size={20} color="#ffffff"/>
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search"
-            placeholderTextColor="#B6B3AC"
-            value={search}
-            onChangeText={setSearch}
-          />
+        <SearchPlaces/>
       </View>
       
       {location ? (
@@ -134,6 +96,7 @@ export default function Map() {
         <Text style={styles.paragraph}>Fetching location...</Text>
       )}
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -141,34 +104,55 @@ const styles = StyleSheet.create({
 
   container: {
     ...StyleSheet.absoluteFillObject,
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     backgroundColor: '#184040',
   },
   paragraph: {
     fontSize: 18,
     textAlign: 'center',
   },
-  searchBar: {
-    flex: 1,
-    color: '#ffffff',
-    fontSize: 15,
-    marginLeft: 5,
-  },
   searchBarContainer: {
     position: 'absolute',
-    top: 50,
+    top: 35,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#084141',
-    borderRadius: 28,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    // elevation: 5,
+    shadowRadius: 10,
+    borderRadius: 10,
     width: '90%',
-    padding: 10,
+    paddingTop: 30,
+    paddingBottom: 25,
+    height: 5,
     zIndex: 1,
+    // backgroundColor: '#184040',
+  },
+  searchPlaces: {
+    // position: 'absolute',
+    // top: 50,
+    // zIndex: 1,
   },
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
+
+  autocompleteContainer: {
+    // position: 'absolute',
+    // top: 50,
+    // width: '90%',
+    // zIndex: 1,
+  },
+  listView: {
+    backgroundColor: 'white',
+  },
+
 });
+// Removed incorrect useRef function definition
+
+
