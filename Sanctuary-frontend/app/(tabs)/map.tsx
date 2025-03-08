@@ -34,14 +34,28 @@ export default function Map() {
     getCurrentLocation();
   }, []);
 
-  const onPlaceSelected = (data, details) => {
-    const { lat, lng } = details.geometry.location;
+  const onPlaceSelected = ( region ) => {
+    console.log('is it coming here');
+    // const { lat, lng } = details.geometry.location;
     mapRef.current?.animateToRegion({
-      latitude: lat,
-      longitude: lng,
+      ...region,
       latitudeDelta: 0.03,
       longitudeDelta: 0.03,
     }, 1000);
+    console.log(region);
+  };
+
+  const onRightButtonPress = () => {
+    if (location) {
+      const { latitude, longitude } = location.coords;
+      mapRef.current?.animateToRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.03,
+      }, 1000);
+    }
+    console.log('right button pressed');
   };
 
   if (errorMsg) {
@@ -56,11 +70,12 @@ export default function Map() {
     <SafeAreaView>
     <View style={styles.container}>
       <View style={styles.searchBarContainer}>
-        <SearchPlaces/>
+        <SearchPlaces onPlaceSelected={onPlaceSelected} onRightButtonPress={onRightButtonPress }/>
       </View>
       
       {location ? (
         <MapView
+          ref={mapRef}
           style={styles.map}
           initialRegion={{
             latitude: location.coords.latitude,

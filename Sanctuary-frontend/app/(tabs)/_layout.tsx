@@ -122,8 +122,11 @@ export default function TabLayout() {
                 name="map" 
                 options={{
                     title: "Map",
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="location-outline" size={30} color={color} style={{ justifyContent: 'center', height: '100%' }}/>
+                    tabBarIcon: ({color, size, focused}) => (
+                        <Ionicons 
+                          name={focused ? "location" : "location-outline"}
+                          size={30} color={color} 
+                          style={{ justifyContent: 'center', height: '100%' }}/>
                     ),
                 }}
             />
@@ -132,8 +135,11 @@ export default function TabLayout() {
                 
                 options={{
                     title: "Report",
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="megaphone-outline" size={30} color={color} />
+                    tabBarIcon: ({color, size, focused}) => (
+                        <Ionicons 
+                          name={focused ? "megaphone" : "megaphone-outline" }
+                          size={30} 
+                          color={color} />
                     ),
                 }}
             />
@@ -141,8 +147,11 @@ export default function TabLayout() {
                 name="safe-walk" 
                 options={{
                     title: "Safe Walk",
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="walk-outline" size={30} color={color} />
+                    tabBarIcon: ({color, size, focused}) => (
+                        <Ionicons 
+                          name={focused ? "walk" : "walk-outline" }
+                          size={30} 
+                          color={color} />
                     ),
                 }}
             />
@@ -150,8 +159,11 @@ export default function TabLayout() {
                 name="profile" 
                 options={{
                     title: "Profile",
-                    tabBarIcon: ({color, size}) => (
-                        <Ionicons name="person-outline" size={30} color={color} />
+                    tabBarIcon: ({color, size, focused}) => (
+                        <Ionicons 
+                          name={focused ? "person" : "person-outline" }
+                          size={30} 
+                          color={color} />
                     ),
                 }}
             />

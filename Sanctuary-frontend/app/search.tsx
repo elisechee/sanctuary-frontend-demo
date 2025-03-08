@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Ionicons } from '@expo/vector-icons';
 
-const SearchPlaces = () => {
+const SearchPlaces = ( {onPlaceSelected, onRightButtonPress} ) => {
  
   return (
     <SafeAreaView style={styles.container}>
@@ -15,6 +15,10 @@ const SearchPlaces = () => {
           fetchDetails
           onPress={(data, details = null) => {
             console.log(data, details);
+            if (details) {
+              const { lat, lng } = details.geometry.location;
+              onPlaceSelected({ latitude: lat, longitude: lng });
+            }
           }}
           query={{
             key: 'AIzaSyC6o-C0T6-uZPzxqFglSGgAgKkt-pf26bY', // Replace with your actual API key
@@ -30,11 +34,11 @@ const SearchPlaces = () => {
                 <Ionicons name="search-outline" size={24} color="white" />
             </View>
           )}
-        //   renderRightButton={() => (
-        //     <View style={styles.iconContainer}>
-        //       <Ionicons name="close-circle-outline" size={24} color="white" />
-        //     </View>
-        //   )}
+          renderRightButton={() => (
+            <TouchableOpacity style={styles.iconContainer2} onPress={onRightButtonPress}>
+              <Ionicons name="navigate" size={24} color="#D99B84" />
+            </TouchableOpacity>
+          )}
      
         />
       </View>
@@ -74,6 +78,18 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         zIndex: 1,
         backgroundColor: '#184040',
+      },
+      iconContainer2: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        width: 44,
+        color: 'white',
+        height: 44,
+        borderRadius: 22,
+        zIndex: 1,
+        backgroundColor: '#084141',
+        marginLeft: 5,
       },
     listView: {
       opacity: 0.9,
